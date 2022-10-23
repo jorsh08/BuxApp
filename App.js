@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Location from 'expo-location';
 import { StyleSheet, Text, View } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 
 export default function App() {
 
@@ -30,19 +30,19 @@ export default function App() {
   }, [])
 
   return (
-    <View style={styles.container}>
-      <MapView 
-        style={styles.map}
-        initialRegion={{
-          latitude: origin.latitude,
-          longitude: origin.longitude,
-          latitudeDelta: 0.0010,
-          longitudeDelta: 0.020
-        }}
-      >
-
-      </MapView>
-      
+    <View 
+      style={styles.container}>
+        <MapView 
+          style={styles.map}
+          initialRegion={{
+            latitude: origin.latitude,
+            longitude: origin.longitude,
+            latitudeDelta: 0.0010,
+            longitudeDelta: 0.020
+          }}
+        >
+          <Marker coordinate={origin}/>
+        </MapView>
     </View>
   );
 }
