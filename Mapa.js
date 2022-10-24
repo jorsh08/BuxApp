@@ -32,6 +32,15 @@ const [origin, setOrigin] = React.useState({
     }, [])
     
 
+    const [autobuses, setAutobuses] = React.useState(null)
+
+    const verAutobuses = async () =>{
+        const res = await fetch('http://192.168.0.3:8000/BuxApp/BuxProyecto/')
+        const data = await res.json()
+        setAutobuses(data)
+        console.log(data)
+    }
+
   return (
     <View style={{flex: 1}}>
         <MapView 
@@ -56,7 +65,7 @@ const [origin, setOrigin] = React.useState({
         </TouchableOpacity>
 
         <TouchableOpacity
-            onPress={() => Alert.alert('Ver camiones')}>
+            onPress={() => verAutobuses()}>
                 <Image 
                     source={autobusButtonBuscar}
                     style={styles.autobusButtonBuscar}
