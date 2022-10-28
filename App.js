@@ -1,21 +1,21 @@
 import * as React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
-
-
+import { NavigationContainer } from '@react-navigation/native';
 import Mapa from './Mapa';
+import 'react-native-gesture-handler';
+import RutasDrawer from './RutasDrawer';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import MapaAutobus from './MapaAutobus';
+
+const Stack = createNativeStackNavigator();
+
 
 export default function App() {
-
   return (
-    <View style={styles.container}>
-      <Mapa/>
-    </View>
-    
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={Mapa}/>
+        <Stack.Screen name="Autobuses" component={MapaAutobus}/>
+      </Stack.Navigator>
+    </NavigationContainer>  
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
-});
