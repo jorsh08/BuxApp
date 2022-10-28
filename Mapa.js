@@ -1,11 +1,11 @@
 import * as React from 'react'
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Alert} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Alert} from 'react-native';
 import autobusButton from './assets/autobusButton.png';
 import autobusButtonBuscar from './assets/autobusButtonBuscar.png'
 
-const Mapa = () => {
+const Mapa = ({ navigation }) => {
 
 const [origin, setOrigin] = React.useState({
     latitude: 27.482715,
@@ -32,6 +32,12 @@ const [origin, setOrigin] = React.useState({
     }, [])
     
 
+    const [autobuses, setAutobuses] = React.useState(null)
+
+    const verAutobuses = async () =>{
+        navigation.navigate('Autobuses');
+    }
+
   return (
     <View style={{flex: 1}}>
         <MapView 
@@ -43,8 +49,9 @@ const [origin, setOrigin] = React.useState({
             longitudeDelta: 0.020
           }}
         >
-            
-            <Marker coordinate={origin}/>
+
+
+
         </MapView>
 
         <TouchableOpacity
@@ -56,7 +63,7 @@ const [origin, setOrigin] = React.useState({
         </TouchableOpacity>
 
         <TouchableOpacity
-            onPress={() => Alert.alert('Ver camiones')}>
+            onPress={() => verAutobuses()}>
                 <Image 
                     source={autobusButtonBuscar}
                     style={styles.autobusButtonBuscar}
@@ -78,14 +85,14 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   autobusButton:{
-    marginTop: 100,
+    marginTop: 50,
     marginLeft: 30,
     width: 80,
     height: 80,
   },
   autobusButtonBuscar:{
     position: 'absolute',
-    top: 490,
+    top: 500,
     left: 140
   },
   titulo:{
@@ -93,7 +100,7 @@ const styles = StyleSheet.create({
     fontSize: 56,
     fontFamily: 'Roboto',
     position: 'absolute',
-    top: 100,
+    top: 50,
     left: 270
   }
 });
