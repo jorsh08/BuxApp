@@ -14,10 +14,14 @@ const MapaAutobus = () => {
   const [autobusesx, setAutobuses] = React.useState([]);
 
   async function verAutobuses(){
-    const res = await fetch('http://177.229.128.9:8000/Autobuses/')
+    let autobuses = [];
+    const res = await fetch('http://177.229.128.9:8000/BuxApp/BuxProyecto/')
     const data = await res.json()
-    const d = JSON.stringify(data)
-    console.log(data)
+    data.forEach(element => {
+      autobuses.push({latitude: parseFloat(element.latitude), longitud: parseFloat(element.longitud), title: element.name})
+    });
+    console.log(autobuses)
+    setAutobuses(autobuses);
   };
 
   const handleNewMarker = (coordinate) => {
@@ -30,8 +34,6 @@ const MapaAutobus = () => {
 
   return (
     <View style={{flex: 1}}>
-      
-
      <MapView
       onPress={(e) => handleNewMarker(e.nativeEvent.coordinate)}
       style={styles.map}
@@ -45,8 +47,7 @@ const MapaAutobus = () => {
       loadingEnabled
       mapType='terrain'
      >
-      
-      {autobuses.map(marker => (
+      {autobusesx.map(marker => (
         <Marker
           coordinate={{
             latitude: marker.latitude,
@@ -56,10 +57,7 @@ const MapaAutobus = () => {
         />
       ))
       }
-      
-      
      </MapView>
-    
     </View>
   );
 };
