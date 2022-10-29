@@ -7,3 +7,11 @@ class AutobuxSerializers(models.Model):
     longitud= models.DecimalField(max_digits=20,decimal_places=17)
     name = models.TextField(max_length=200)
     lastName = models.TextField(max_length=200)
+
+class AutobusesSerializers(models.Model):
+    latitude = models.DecimalField(max_digits=20,decimal_places=17)
+    longitud= models.DecimalField(max_digits=20,decimal_places=17)
+
+class CamionModel(models.Model):
+    latitude = models.DecimalField(max_digits=20,decimal_places=17)
+    longitud= models.DecimalField(max_digits=20,decimal_places=17)

@@ -9,6 +9,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+autobuses.js
 
 # macOS
 .DS_Store

@@ -2,6 +2,7 @@ import { View, StyleSheet, Text, FlatList, Alert } from 'react-native';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
 import React, { useEffect } from 'react';
+import { autobuses } from './Autobuses';
 
 const MapaAutobus = () => {
 
@@ -10,13 +11,18 @@ const MapaAutobus = () => {
     longitude: -109.932815,
     });
 
-  const [autobuses, setAutobuses] = React.useState(null);
+  const [autobusesx, setAutobuses] = React.useState([]);
 
   async function verAutobuses(){
-    const res = await fetch('http://192.168.0.8:8000/BuxApp/BuxProyecto/')
+    const res = await fetch('http://177.229.128.9:8000/Autobuses/')
     const data = await res.json()
-    setAutobuses(data)
+    const d = JSON.stringify(data)
+    console.log(data)
   };
+
+  const handleNewMarker = (coordinate) => {
+    console.log(coordinate);
+  }
 
   useEffect(()=>{
     verAutobuses();
@@ -24,16 +30,35 @@ const MapaAutobus = () => {
 
   return (
     <View style={{flex: 1}}>
-      <FlatList
-        data={autobuses}
-        renderItem={(item) =>{
-          console.log(item.item);
-          return <Text> longitud: {item.item.longitud} 
-                        latitude: {item.item.latitude}
-          </Text>
-          
-        }}
-      />
+      
+
+     <MapView
+      onPress={(e) => handleNewMarker(e.nativeEvent.coordinate)}
+      style={styles.map}
+      initialRegion={{
+        latitude: origin.latitude,
+        longitude: origin.longitude,
+        latitudeDelta: 0.0010,
+        longitudeDelta: 0.020
+      }}
+      showsUserLocation
+      loadingEnabled
+      mapType='terrain'
+     >
+      
+      {autobuses.map(marker => (
+        <Marker
+          coordinate={{
+            latitude: marker.latitude,
+            longitude: marker.longitud}}
+          title = {marker.title}
+          key = {marker.title}
+        />
+      ))
+      }
+      
+      
+     </MapView>
     
     </View>
   );
@@ -41,10 +66,13 @@ const MapaAutobus = () => {
 
 const styles = StyleSheet.create({
   map: {
-    
+    ...StyleSheet.absoluteFill,
     width: '100%',
     height: '100%',
   },
+  marcadores: {
+    flex: 1
+  }
   
 });
 
