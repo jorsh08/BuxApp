@@ -1,10 +1,10 @@
-import { View, StyleSheet, Text, FlatList, Alert } from 'react-native';
+import { View, StyleSheet, Text, FlatList, Image, TouchableOpacity, Alert } from 'react-native';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
 import React, { useEffect } from 'react';
-import { autobuses } from './Autobuses';
+import back from './assets/Arrowback.png';
 
-const MapaAutobus = () => {
+const MapaAutobus = ({navigation}) => {
 
   const [origin, setOrigin] = React.useState({
     latitude: 27.482715,
@@ -59,8 +59,11 @@ const MapaAutobus = () => {
       showsUserLocation
       loadingEnabled
       mapType='terrain'
+      showsMyLocationButton={false}
      >
       
+      
+
       <Marker coordinate={subiAutobus}/>
 
       {autobusesx.map(marker => (
@@ -75,6 +78,15 @@ const MapaAutobus = () => {
       }
       
      </MapView>
+
+     <TouchableOpacity
+             onPress={() => navigation.navigate('Inicio')}>
+                <Image 
+                    source={back}
+                    style={styles.back}
+                    />
+        </TouchableOpacity>
+
     </View>
   );
 };
@@ -84,6 +96,12 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFill,
     width: '100%',
     height: '100%',
+  },
+  back:{
+    marginTop: 100,
+    marginLeft: 30,
+    width: 50,
+    height: 50,
   },
   marcadores: {
     flex: 1

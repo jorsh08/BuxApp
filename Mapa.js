@@ -35,7 +35,7 @@ const [origin, setOrigin] = React.useState({
     const [autobuses, setAutobuses] = React.useState(null)
 
     const verAutobuses = async () =>{
-        navigation.navigate('Autobuses');
+        navigation.navigate('Linea 10');
     }
 
   return (
@@ -48,14 +48,17 @@ const [origin, setOrigin] = React.useState({
             latitudeDelta: 0.0010,
             longitudeDelta: 0.020
           }}
+          showsUserLocation
+          showsMyLocationButton={false}
+          mapType='terrain'
         >
 
 
-
+          
         </MapView>
 
         <TouchableOpacity
-            onPress={() => Alert.alert('Lista camiones')}>
+             onPress={() => navigation.openDrawer()}>
                 <Image 
                     source={autobusButton}
                     style={styles.autobusButton}
@@ -85,7 +88,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   autobusButton:{
-    marginTop: 50,
+    marginTop: 100,
     marginLeft: 30,
     width: 80,
     height: 80,
@@ -100,7 +103,7 @@ const styles = StyleSheet.create({
     fontSize: 56,
     fontFamily: 'Roboto',
     position: 'absolute',
-    top: 50,
+    top: 100,
     left: 270
   }
 });
