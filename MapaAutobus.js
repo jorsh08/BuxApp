@@ -40,9 +40,15 @@ const MapaAutobus = ({navigation}) => {
     console.log(coordinate);
   }
 
+  async function moverAutobus(){
+    const interval = setInterval(()=>{
+      subirAutobus()
+    }, 2000);
+  }
+
   useEffect(()=>{
     verAutobuses();
-    subirAutobus();
+    moverAutobus();
   }, []);
 
   return (
