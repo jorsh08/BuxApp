@@ -5,6 +5,8 @@ import 'react-native-gesture-handler';
 import RutasDrawer from './Navegacion/RutasDrawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MapaAutobus from './MapaAutobus';
+import Linea10 from './Linea10';
+import SubiAutobus from './SubiAutobus';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,7 +16,9 @@ export default function App() {
     <NavigationContainer>
       <RutasDrawer/>
       <Stack.Screen name="Home" component={Mapa}/>
-      <Stack.Screen name="Autobuses" component={MapaAutobus}/>      
+      <Stack.Screen name="Autobuses" component={MapaAutobus}/>
+      <Stack.Screen name="Linea 10" component={Linea10}/>
+      <Stack.Screen name="SubiAutobus" component={SubiAutobus}/>
     </NavigationContainer>  
   );
 }

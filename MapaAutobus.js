@@ -13,27 +13,54 @@ const MapaAutobus = ({navigation}) => {
 
   const [autobusesx, setAutobuses] = React.useState([]);
 
-  const [subiAutobus, setSubiAutobus] = React.useState({
+  const [autobus, setAutobus] = React.useState({
     latitude: 0,
     longitude: 0,
   });
 
   async function verAutobuses(){
     let autobuses = [];
-    const res = await fetch('http://177.229.128.9:8000/BuxApp/BuxProyecto/')
+    const res = await fetch('http://192.168.0.103:8000/BuxApp/BuxProyecto/')
     const data = await res.json()
     data.forEach(element => {
       autobuses.push({latitude: parseFloat(element.latitude), longitud: parseFloat(element.longitud), title: element.name})
     });
     setAutobuses(autobuses);
-  };
+  }
 
-  async function subirAutobus(){
+  async function actualizarMarcador(){
     let location = await Location.getCurrentPositionAsync({});
-    setSubiAutobus({
-      longitude: location.coords.longitude,
+
+    const jsonAutobus = {
       latitude: location.coords.latitude,
-    })
+      longitud: location.coords.longitude
+    }
+
+    peticion(jsonAutobus)
+  }
+
+  async function peticion(coordenadas){
+    try {
+      let res = await fetch('http://192.168.0.103:8000/Autobuses/25/', {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(coordenadas)
+      });
+      res = await res.json();
+    } catch (e) {
+    }
+  }
+
+  async function pintarMarcador(){
+    const res = await fetch('http://192.168.0.103:8000/Autobuses/25/')
+    const data = await res.json()
+    setAutobus({
+      latitude: parseFloat(data.latitude),
+      longitude: parseFloat(data.longitud)
+    })    
   }
 
   const handleNewMarker = (coordinate) => {
@@ -42,7 +69,8 @@ const MapaAutobus = ({navigation}) => {
 
   async function moverAutobus(){
     const interval = setInterval(()=>{
-      subirAutobus()
+      actualizarMarcador()
+      pintarMarcador()
     }, 2000);
   }
 
@@ -67,10 +95,8 @@ const MapaAutobus = ({navigation}) => {
       mapType='terrain'
       showsMyLocationButton={false}
      >
-      
-      
 
-      <Marker coordinate={subiAutobus}/>
+      <Marker coordinate={autobus}/>
 
       {autobusesx.map(marker => (
         <Marker
@@ -91,7 +117,7 @@ const MapaAutobus = ({navigation}) => {
                     source={back}
                     style={styles.back}
                     />
-        </TouchableOpacity>
+      </TouchableOpacity>
 
     </View>
   );
