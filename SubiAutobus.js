@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
 import * as Location from 'expo-location';
-import MapView from 'react-native-maps'
+import MapView, { Polyline } from 'react-native-maps'
 import React, { useEffect } from 'react';
 import back from './assets/Arrowback.png';
 
@@ -22,6 +22,7 @@ const SubiAutobus = ({ navigation }) => {
                 showsMyLocationButton={false}
             >
 
+                
             </MapView>
 
             <TouchableOpacity

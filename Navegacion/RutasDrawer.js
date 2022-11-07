@@ -37,6 +37,13 @@ const RutasDrawer = () => {
             headerRight: false,
           }}
         />
+        <Drawer.Screen name="MapaAutobus" component={MapaAutobus} 
+          options={{
+            title: '',
+            headerLeft: false,
+            headerRight: false,
+          }}
+        />
 
     </Drawer.Navigator>
   )

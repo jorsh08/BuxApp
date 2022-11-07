@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text, FlatList, Image, TouchableOpacity, Alert } from 'react-native';
 import * as Location from 'expo-location';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Polyline } from 'react-native-maps';
 import React, { useEffect } from 'react';
 import back from './assets/Arrowback.png';
 
@@ -108,7 +108,77 @@ const MapaAutobus = ({navigation}) => {
         />
       ))
       }
-      
+
+                <Polyline
+                    coordinates={[
+                        {
+                            latitude: 27.483263223170002,
+                            longitude: -109.93043303489685,
+                        },
+                        {
+                            latitude: 27.50969967849905,
+                            longitude: -109.93039749562739,
+                        }
+                    ]}
+                    strokeColor='pink'
+                    strokeWidth={3}
+                />
+                <Polyline
+                    coordinates={[
+                        {
+                            latitude: 27.483263223170002,
+                            longitude: -109.93043303489685,
+                        },
+                        {
+                            latitude: 27.482751627303074,
+                            longitude: -109.93024293333292,
+                        }
+                    ]}
+                    strokeColor='pink'
+                    strokeWidth={3}
+                />
+                <Polyline
+                    coordinates={[
+                        {
+                            latitude: 27.482751627303074,
+                            longitude: -109.93024293333292,
+                        },
+                        {
+                            latitude: 27.481893509132586,
+                            longitude: -109.92922503501177,
+                        }
+                    ]}
+                    strokeColor='pink'
+                    strokeWidth={3}
+                />
+                <Polyline
+                    coordinates={[
+                        {
+                            latitude: 27.481893509132586,
+                            longitude: -109.92922503501177,
+                        },
+                        {
+                            latitude: 27.474868288977067,
+                            longitude: -109.92915429174901,
+                        }
+                    ]}
+                    strokeColor='pink'
+                    strokeWidth={3}
+                />
+                <Polyline
+                    coordinates={[
+                          {
+                            latitude: 27.474868288977067,
+                            longitude: -109.92915429174901,
+                        },
+                        {
+                            latitude: 27.474857877826388,
+                            longitude: -109.92667458951473,
+                        }
+                    ]}
+                    strokeColor='pink'
+                    strokeWidth={3}
+                />
      </MapView>
 
      <TouchableOpacity
