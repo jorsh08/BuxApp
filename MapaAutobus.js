@@ -18,6 +18,8 @@ const MapaAutobus = ({navigation}) => {
     longitude: 0,
   });
 
+  
+
   async function verAutobuses(){
     let autobuses = [];
     const res = await fetch('http://192.168.0.103:8000/BuxApp/BuxProyecto/')

@@ -16,5 +16,5 @@ class CamionSerializers(serializers.ModelSerializer):
 class Linea10Serializers(serializers.ModelSerializer):
     class Meta:
         model = Linea10Model
-        fields = ('latitude', 'longitude', 'horaViaje', 'fechaViaje', 'linea', 'distancia', 'ayudaPersonas', 'tiempoUtilizacion')
+        fields = ("id",'latitude', 'longitude', 'horaViaje', 'fechaViaje', 'linea', 'distancia', 'ayudaPersonas', 'tiempoUtilizacion')
 
