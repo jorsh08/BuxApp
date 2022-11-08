@@ -26,8 +26,8 @@ const Linea10 = ({ navigation }) => {
         let autobuses = [];
         const res = await fetch('http://192.168.0.103:8000/Linea10/')
         const data = await res.json()
-        data.forEach(element => {
-            autobuses.push({latitude: parseFloat(element.latitude), longitude: parseFloat(element.longitude), horaViaje: element.horaViaje})
+        data.forEach( function (element, i) {
+            autobuses.push({latitude: parseFloat(element.latitude), longitude: parseFloat(element.longitude), id: i, linea: element.linea})
         });
         setAutobuses(autobuses);
     }
@@ -82,8 +82,8 @@ const Linea10 = ({ navigation }) => {
                         coordinate={{
                         latitude: marker.latitude,
                         longitude: marker.longitude}}
-                        title = {marker.horaViaje}
-                        key = {marker.horaViaje}
+                        title = {marker.linea}
+                        key = {marker.id}
                     />
                   ))
                 }
