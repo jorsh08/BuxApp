@@ -88,22 +88,22 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   autobusButton:{
-    marginTop: 100,
+    marginTop: 80,
     marginLeft: 30,
     width: 80,
     height: 80,
   },
   autobusButtonBuscar:{
     position: 'absolute',
-    top: 500,
-    left: 140
+    top: 400,
+    left: 130
   },
   titulo:{
     color:'#454545',
     fontSize: 56,
     fontFamily: 'Roboto',
     position: 'absolute',
-    top: 100,
+    top: 80,
     left: 270
   }
 });

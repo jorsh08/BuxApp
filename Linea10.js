@@ -4,22 +4,35 @@ import MapView, { Marker, Polyline}  from 'react-native-maps'
 import React, { useEffect } from 'react';
 import back from './assets/Arrowback.png';
 import autobusim from './assets/trakingbus.png';
+import positionimg from './assets/position.png'
 const Linea10 = ({ navigation }) => {
 
-    const [origin] = React.useState({
+    const [origin, setOrigin] = React.useState({
         latitude: 27.482715,
         longitude: -109.932815,
         latitudeDelta: 0.0010,
         longitudeDelta: 0.020
     })
 
+    const [position, setPostion] = React.useState({
+        latitude: 0,
+        longitude: 0,
+    })
+
     const [autobuses, setAutobuses] = React.useState([]);
 
     async function obtenerRutas(){
+        
         const interval = setInterval(()=>{
             getLinea10();
+            marcadorUbicacion();
           }, 1000);
         
+    }
+
+    async function marcadorUbicacion(){
+      const location = await Location.getCurrentPositionAsync({});
+      setPostion({latitude: location.coords.latitude, longitude: location.coords.longitude, key: 0});
     }
 
     async function getLinea10(){
@@ -34,7 +47,7 @@ const Linea10 = ({ navigation }) => {
 
     async function postLinea10(json){
         try {
-            let res = await fetch('http://192.168.0.103:8000/Linea10/', {
+            const res = await fetch('http://192.168.0.103:8000/Linea10/', {
               method: 'POST',
               headers: {
                 Accept: 'application/json',
@@ -42,8 +55,9 @@ const Linea10 = ({ navigation }) => {
               },
               body: JSON.stringify(json)
             });
-            res = await res.json();
-            navigation.navigate('SubiAutobus', res)
+            const resp = await res.json();
+            console.log(resp)
+            navigation.navigate('SubiAutobus', resp)
           } catch (e) {
             console.log(e)
           }
@@ -71,12 +85,18 @@ const Linea10 = ({ navigation }) => {
 
     return (
         <View style={{ flex: 1 }}>
+          
             <MapView
                 style={styles.map}
                 initialRegion={origin}
                 mapType='terrain'
                 showsMyLocationButton={false}
             >
+                <Marker
+                  coordinate={position}
+                  image={positionimg}
+                />
+
                 <Polyline
                     coordinates={[
                         {
