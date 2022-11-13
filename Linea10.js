@@ -19,6 +19,10 @@ const Linea10 = ({ navigation }) => {
         longitude: 0,
     })
 
+    const [seleccion, setSeleccion] = React.useState(true);
+
+    const [idSeleccion, setidSeleccion] = React.useState();
+
     const [autobuses, setAutobuses] = React.useState([]);
 
     async function obtenerRutas(){
@@ -45,6 +49,10 @@ const Linea10 = ({ navigation }) => {
         setAutobuses(autobuses);
     }
 
+    async function navegar(resp){
+      navigation.navigate('SubiAutobus', resp)
+    }
+
     async function postLinea10(json){
         try {
             const res = await fetch('http://192.168.0.103:8000/Linea10/', {
@@ -56,8 +64,7 @@ const Linea10 = ({ navigation }) => {
               body: JSON.stringify(json)
             });
             const resp = await res.json();
-            console.log(resp)
-            navigation.navigate('SubiAutobus', resp)
+            navegar(resp);
           } catch (e) {
             console.log(e)
           }
@@ -69,17 +76,61 @@ const Linea10 = ({ navigation }) => {
         const jsonLinea10 = {
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
-            fechaViaje: '2022-11-06',
+            fechaViaje: '2022-11-15',
             linea: 'Linea 10',
             distancia: 0,
-            ayudaPersonas: 0,
-            tiempoUtilizacion: 0
+            personasAbordo: 0,
+            tiempoUtilizacion: 0,
         }
         
         postLinea10(jsonLinea10);
     }
 
+    async function subirAutobusActivo(){
+
+      const res = await fetch('http://192.168.0.103:8000/Linea10/'+idSeleccion+'/')
+      const data = await res.json()
+
+      const personas = data.personasAbordo + 1;
+
+        const coordenadas = {
+            latitude: data.latitude,
+            longitude: data.longitude,
+            horaViaje: data.horaViaje,
+            fechaViaje: data.fechaViaje,
+            linea: data.linea,
+            distancia: data.distancia,
+            personasAbordo: personas,
+            tiempoUtilizacion: data.tiempoUtilizacion,
+        }
+
+
+
+      try {
+        let res = await fetch('http://192.168.0.103:8000/Linea10/'+idSeleccion+'/', {
+          method: 'PUT',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(coordenadas)
+        });
+        res = await res.json();
+        console.log(res)
+        navegar(res);
+      } catch (e) {
+        console.log(e)
+      }
+      
+    }
+
+    async function seleccionAutobus(idAutobus){
+      setSeleccion(false)
+      setidSeleccion(idAutobus)
+    }
+
     useEffect(()=>{
+      setSeleccion(true)
         obtenerRutas();
       }, []);
 
@@ -91,6 +142,7 @@ const Linea10 = ({ navigation }) => {
                 initialRegion={origin}
                 mapType='terrain'
                 showsMyLocationButton={false}
+                onPress={(e)=> setSeleccion(true)}
             >
                 <Marker
                   coordinate={position}
@@ -734,12 +786,29 @@ const Linea10 = ({ navigation }) => {
                         longitude: marker.longitude}}
                         title = {marker.linea}
                         key = {marker.id}
-                        image = {autobusim} 
+                        image = {autobusim}
+                        onPress = {() => seleccionAutobus(marker.id)}
                     />
                   ))
                 }
 
             </MapView>
+            <TouchableOpacity
+                onPress={() => navigation.navigate('Inicio')}>
+                <Image
+                    source={back}
+                    style={styles.back}
+                />
+            </TouchableOpacity>
+            
+            <View style={styles.barraInferrior}/>
+
+            <TouchableOpacity
+              style={seleccion ? styles.seleccionAutobus : styles.seleccionadoAutobus}
+              disabled={seleccion}
+              onPress={() => subirAutobusActivo()}>
+                <Text style={styles.subirAutobus}>Subir al autobus</Text>
+            </TouchableOpacity>
 
             <TouchableOpacity
                 style={styles.subiAutobus}
@@ -748,13 +817,7 @@ const Linea10 = ({ navigation }) => {
             </TouchableOpacity>
 
 
-            <TouchableOpacity
-                onPress={() => navigation.navigate('Inicio')}>
-                <Image
-                    source={back}
-                    style={styles.back}
-                />
-            </TouchableOpacity>
+            
         </View>
     )
 }
@@ -771,21 +834,56 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
     },
+    seleccionAutobus:{
+      position: 'absolute',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#454545',
+      marginTop: 640,
+      marginLeft: 90,
+      width: 200,
+      height: 40,
+      borderRadius: 20
+    },
+    subirAutobus:{
+      color: '#FFFFFF',
+        fontWeight: 'bold',
+        fontSize: 18
+    },
+    seleccionadoAutobus:{
+      position: 'absolute',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#01B49F',
+      marginTop: 640,
+      marginLeft: 90,
+      width: 200,
+      height: 40,
+      borderRadius: 20
+    },
     subiAutobus: {
         position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 650,
+        marginTop: 700,
         marginLeft: 115,
-        backgroundColor: '#01B49F',
-        width: 180,
-        height: 40,
-        borderRadius: 10
+        borderColor: '#01B49F',
+        borderWidth: 3,
+        width: 150,
+        height: 30,
+        borderRadius: 20
     },
     subiAutobusText: {
-        color: '#ffffff',
+      color: '#01B49F',
         fontWeight: 'bold',
-        fontSize: 18
+        fontSize: 14
+    },
+    barraInferrior: {
+        backgroundColor: '#E8F1F0',
+        width: 600, 
+        height: 400,
+        marginTop: 450,
+        borderRadius: 30
     }
 });
 

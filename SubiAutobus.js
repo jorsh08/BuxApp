@@ -2,21 +2,23 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from 'react-na
 import * as Location from 'expo-location';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import React, { useEffect } from 'react';
-import back from './assets/Arrowback.png';
 import positionimg from './assets/trakingbus.png'
+
 const SubiAutobus = ({ navigation, route }) => {
 
-    const { id, horaViaje, fechaViaje, linea, distancia, ayudaPersonas, tiempoUtilizacion} = route.params;
+    const { id, latitude, longitude, horaViaje, fechaViaje, linea, distancia, personasAbordo, tiempoUtilizacion} = route.params;
 
     const [autobus, setAutobus] = React.useState({
         latitude: 0,
         longitude: 0
     });
 
-    async function obtenerAutobus(){
-        const res = await fetch('http://192.168.0.103:8000/Linea10/'+route.params.id+'/')
+    async function obtenerAutobus(idAutobus){
+        const res = await fetch('http://192.168.0.103:8000/Linea10/'+idAutobus+'/')
+        
         if (res.ok){
             const data = await res.json()
+            
             setAutobus({
                 id: data.id,
                 latitude: parseFloat(data.latitude),
@@ -24,11 +26,12 @@ const SubiAutobus = ({ navigation, route }) => {
                 linea: data.linea
             })
         }
-        moverAutobus(route.params.id)
+        moverAutobus(idAutobus)
     }
 
     async function moverAutobus(idAutobus){
         let location = await Location.getCurrentPositionAsync({});
+
         const coordenadas = {
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
@@ -36,9 +39,10 @@ const SubiAutobus = ({ navigation, route }) => {
             fechaViaje: fechaViaje,
             linea: linea,
             distancia: distancia,
-            ayudaPersonas: ayudaPersonas,
-            tiempoUtilizacion: tiempoUtilizacion
+            personasAbordo: personasAbordo,
+            tiempoUtilizacion: tiempoUtilizacion,
         }
+
         try {
             let res = await fetch('http://192.168.0.103:8000/Linea10/'+idAutobus+'/', {
               method: 'PUT',
@@ -50,12 +54,13 @@ const SubiAutobus = ({ navigation, route }) => {
             });
             res = await res.json();
           } catch (e) {
+            console.log(e)
           }
     }
 
-    async function actualizarAutobus(){
+    async function actualizarAutobus(idAutobus){
         const interval = setInterval(()=>{
-            obtenerAutobus();
+            obtenerAutobus(idAutobus);
           }, 5000);
         
     }
@@ -67,15 +72,66 @@ const SubiAutobus = ({ navigation, route }) => {
         longitudeDelta: 0.020
     })
 
+   
+
     async function bajarAutobus(idAutobus){
-        const res = await fetch('http://192.168.0.103:8000/Linea10/'+idAutobus+'/', {method: 'DELETE'})
-        navigation.navigate('Inicio')
+      const autob = await fetch ('http://192.168.0.103:8000/Linea10/'+idAutobus+'/')
+      const resul = await autob.json();
+      if (resul.personasAbordo < 1){
+
+          const jso = {
+            fechaViaje: resul.fechaViaje,
+            linea: resul.linea
+          }
+
+          const postres = await fetch('http://192.168.0.103:8000/Viajes/', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(jso)
+          });
+
+          const res = await fetch('http://192.168.0.103:8000/Linea10/'+idAutobus+'/', {method: 'DELETE'})
+          navigation.goBack()
+        }else{
+          console.log("restado")
+        
+        const personas = personasAbordo - 1;
+        
+        const coordenadas = {
+            latitude: latitude,
+            longitude: longitude,
+            horaViaje: horaViaje,
+            fechaViaje: fechaViaje,
+            linea: linea,
+            distancia: distancia,
+            personasAbordo: personas,
+            tiempoUtilizacion: tiempoUtilizacion,
+        }
+
+      try {
+        let res = await fetch('http://192.168.0.103:8000/Linea10/'+idAutobus+'/', {
+          method: 'PUT',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(coordenadas)
+        });
+        res = await res.json();
+        
+      } catch (e) {
+        console.log(e)
+      }
+        }
+        
     }
 
     useEffect(()=>{
-        console.log(route.params.id)
-        actualizarAutobus();
-      }, []);
+        actualizarAutobus(route.params.id);
+      }, [route]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -725,20 +781,20 @@ const SubiAutobus = ({ navigation, route }) => {
                 />
 
             </MapView>
+            
+
+            <View style={styles.barraInferrior}/>
+            
+            
 
             <TouchableOpacity
-                style={styles.subiAutobus}
-                onPress={() => bajarAutobus(id)}>
+              style={styles.subiAutobus}
+              onPress={() => bajarAutobus(id)}>
                 <Text style={styles.subiAutobusText}>Bajar del autobus</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-                onPress={() => navigation.navigate('Linea 10')}>
-                <Image
-                    source={back}
-                    style={styles.back}
-                />
-            </TouchableOpacity>
+            
+
         </View>
   )
 
@@ -750,27 +806,28 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
-    back: {
-        marginTop: 100,
-        marginLeft: 30,
-        width: 50,
-        height: 50,
-    },
     subiAutobus: {
         position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 650,
+        marginTop: 700,
         marginLeft: 115,
         backgroundColor: '#01B49F',
         width: 180,
         height: 40,
-        borderRadius: 10
+        borderRadius: 30
     },
     subiAutobusText: {
         color: '#ffffff',
         fontWeight: 'bold',
         fontSize: 18
+    },
+    barraInferrior: {
+        backgroundColor: '#E8F1F0',
+        width: 600, 
+        height: 400,
+        marginTop: 600,
+        borderRadius: 30
     }
 });
 

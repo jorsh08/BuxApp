@@ -1,0 +1,36 @@
+[33m4ab303f[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m trazos implementados en el subiautobus y la eliminacion
+[33mfa8bedb[m ruta trazada e imagenes de camiones implementadas
+[33m705de5e[m funcion principal implmentada
+[33m96e2959[m no mucho
+[33me3a6773[m inicio de trazado de linea 10
+[33m26898ca[m post implementado
+[33m269d21f[m el marcador del camion ya sigue la ubicacion del usuario
+[33m82d3677[m navegacion implementada correctamente
+[33m45c1f5b[m simulador de subir al camion implmentado casi en su totalidad
+[33md1a182b[m conexion con el backend funcionando
+[33me4166e2[m marcadores en el mapa agregados
+[33mdc44563[m nuevos cambios
+[33m4782286[m nuevos cambios
+[33m8399e95[m[33m ([m[1;31morigin/Jorge[m[33m, [m[1;32mJorge[m[33m)[m navegacion agregada e impresion de datos en una vista
+[33me6f5975[m peticion al back realizada
+[33m2019ff8[m Merge branch 'Jorge'
+[33m39eb40b[m botones agregados
+[33m8431718[m delete
+[33mb78572b[m hh
+[33m7e85547[m as
+[33m8e5a691[m Merge branch 'back' of https://github.com/jorsh08/BuxApp into Jorge
+[33m1b92708[m test
+[33ma5b00de[m prueba
+[33mdeaef36[m limpiando
+[33m1582d28[m Merge branch 'back' into Jorge
+[33mda45226[m agarra
+[33m5c56682[m test
+[33m7876a94[m Merge branch 'back' into Jorge
+[33me2d4df2[m Merge pull request #1 from jorsh08/back
+[33mb2cdb41[m holaaa
+[33mae5b611[m test
+[33md96e71f[m ultimo avance
+[33m44e4c5f[m permiso de localizacion agregado
+[33mea622b0[m mapa agregado
+[33m0177062[m first commit
+[33mf8ec8f6[m Initial commit

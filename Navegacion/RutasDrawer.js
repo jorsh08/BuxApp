@@ -1,6 +1,7 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react'
 import Linea10 from '../Linea10';
+import ListaViajes from '../ListaViajes';
 import Mapa from '../Mapa';
 import MapaAutobus from '../MapaAutobus';
 import SubiAutobus from '../SubiAutobus';
@@ -25,6 +26,12 @@ const RutasDrawer = () => {
           }}
         />
         <Drawer.Screen name="Linea 10" component={Linea10} 
+          options={{
+            headerLeft: false,
+            headerRight: false,
+          }}
+        />
+        <Drawer.Screen name="Lista viajes" component={ListaViajes} 
           options={{
             headerLeft: false,
             headerRight: false,

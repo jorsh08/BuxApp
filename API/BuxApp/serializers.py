@@ -1,6 +1,6 @@
 from dataclasses import field
 from rest_framework import serializers
-from .models import AutobuxSerializers, CamionModel, Linea10Model
+from .models import AutobuxSerializers, CamionModel, Linea10Model, ViajesModel
 
 
 class AutobusSerializers(serializers.ModelSerializer):
@@ -16,5 +16,9 @@ class CamionSerializers(serializers.ModelSerializer):
 class Linea10Serializers(serializers.ModelSerializer):
     class Meta:
         model = Linea10Model
-        fields = ("id",'latitude', 'longitude', 'horaViaje', 'fechaViaje', 'linea', 'distancia', 'ayudaPersonas', 'tiempoUtilizacion')
+        fields = ("id",'latitude', 'longitude', 'horaViaje', 'fechaViaje', 'linea', 'distancia', 'personasAbordo', 'tiempoUtilizacion')
 
+class ViajesSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = ViajesModel
+        fields = ('id', 'fechaViaje', 'horaViaje', 'linea')
